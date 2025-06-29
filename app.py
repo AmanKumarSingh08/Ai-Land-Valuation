@@ -2,31 +2,27 @@ import os
 import pickle as pk
 import pandas as pd
 import streamlit as st
-from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Read paths from .env
-MODEL_PATH = os.getenv('MODEL_PATH')
-DATA_PATH = os.getenv('DATA_PATH')
+# Read paths from Streamlit secrets
+MODEL_PATH = st.secrets["MODEL_PATH"]
+DATA_PATH = st.secrets["DATA_PATH"]
 
 # Validate MODEL_PATH
 if not MODEL_PATH:
-    st.error("❌ MODEL_PATH is not set in environment variables.")
+    st.error("❌ MODEL_PATH is not set.")
     st.stop()
 if not os.path.exists(MODEL_PATH):
     st.error(f"❌ Model file not found at: {MODEL_PATH}")
-    st.info("Please check your `.env` file or upload the model file to the specified path.")
+    st.info("Make sure the file exists in your repo at that path.")
     st.stop()
 
 # Validate DATA_PATH
 if not DATA_PATH:
-    st.error("❌ DATA_PATH is not set in environment variables.")
+    st.error("❌ DATA_PATH is not set.")
     st.stop()
 if not os.path.exists(DATA_PATH):
     st.error(f"❌ Data file not found at: {DATA_PATH}")
-    st.info("Please check your `.env` file or upload the data file to the specified path.")
+    st.info("Make sure the file exists in your repo at that path.")
     st.stop()
 
 # Load model
