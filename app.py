@@ -11,20 +11,25 @@ load_dotenv()
 MODEL_PATH = os.getenv('MODEL_PATH')
 DATA_PATH = os.getenv('DATA_PATH')
 
-# Optional debug info
-# st.write("Model Path:", MODEL_PATH)
-# st.write("Data Path:", DATA_PATH)
-
-# Validate paths
-if not MODEL_PATH or not os.path.exists(MODEL_PATH):
+# Validate MODEL_PATH
+if not MODEL_PATH:
+    st.error("❌ MODEL_PATH is not set in environment variables.")
+    st.stop()
+if not os.path.exists(MODEL_PATH):
     st.error(f"❌ Model file not found at: {MODEL_PATH}")
+    st.info("Please check your `.env` file or upload the model file to the specified path.")
     st.stop()
 
-if not DATA_PATH or not os.path.exists(DATA_PATH):
+# Validate DATA_PATH
+if not DATA_PATH:
+    st.error("❌ DATA_PATH is not set in environment variables.")
+    st.stop()
+if not os.path.exists(DATA_PATH):
     st.error(f"❌ Data file not found at: {DATA_PATH}")
+    st.info("Please check your `.env` file or upload the data file to the specified path.")
     st.stop()
 
-# Load model and data
+# Load model
 try:
     with open(MODEL_PATH, 'rb') as f:
         model = pk.load(f)
@@ -32,6 +37,7 @@ except Exception as e:
     st.error(f"❌ Could not load model: {e}")
     st.stop()
 
+# Load data
 try:
     data = pd.read_csv(DATA_PATH)
 except Exception as e:
